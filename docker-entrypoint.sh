@@ -68,7 +68,7 @@ curl -s https://core.telegram.org/getProxyConfig -o ${REMOTE_CONFIG} || {
 REMOTE_SECRET=/data/proxy-secret
 curl -s https://core.telegram.org/getProxySecret -o ${REMOTE_SECRET} || {
   echo '[F] Cannot download proxy secret from Telegram servers.'
-  exit 2
+  exit 5
 }
 
 if [ ! -z "$EXTERNAL_IP" ]; then
