@@ -34,7 +34,7 @@ else
   done
 fi
 
-if echo "$SECRET" | grep -qE '^[0-9a-fA-F]{32}(,[0-9a-fA-F]{32}){,15}$'; then
+if echo "$SECRET" | grep -qE '^[0-9a-fA-F]{32}(,[0-9a-fA-F]{32}){0,15}$'; then
   SECRET="$(echo "$SECRET" | tr '[:upper:]' '[:lower:]')"
   SECRET_CMD="-S $(echo "$SECRET" | sed 's/,/ -S /g')"
   echo -- "$SECRET_CMD" > /data/secret_cmd
@@ -86,7 +86,7 @@ fi
 if [ ! -z "$INTERNAL_IP" ]; then
   echo "[+] Using the explicitly passed internal IP: ${INTERNAL_IP}."
 else
-  INTERNAL_IP="$(ip -4 route get 8.8.8.8 | grep '^8\.8\.8\.8\s' | grep -Po 'src\s+\d+\.\d+\.\d+\.\d+' | awk '{print $2}')"
+  INTERNAL_IP="$(ip -4 route get 8.8.8.8 | grep '^8\.8\.8\.8\s' | grep -Eo 'src\s+\d+\.\d+\.\d+\.\d+' | awk '{print $2}')"
   if [[ -z "$INTERNAL_IP" ]]; then
     echo "[F] Cannot determine internal IP address."
     exit 4
