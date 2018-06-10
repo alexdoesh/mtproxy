@@ -21,7 +21,8 @@ FROM alpine:3.6
 LABEL maintainer="Alex Doe <alex@doe.sh>"
 LABEL description="Telegram Messenger MTProto zero-configuration proxy server."
 
-RUN apk add --no-cache curl libcrypto1.0
+RUN apk add --no-cache curl \
+  && ln -s /usr/lib/libcrypto.so.41 /usr/lib/libcrypto.so.1.0.0
 
 WORKDIR /mtproxy
 

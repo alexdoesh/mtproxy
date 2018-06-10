@@ -5,12 +5,13 @@ services:
   mtproxy:
     image: alexdoesh/mtproxy
     container_name: mtproxy
+    restart: always
     # command: --add --your --commands
     # environment:
     #   - OVERRIDE=SOME
     #   - VARIABLES=HERE
     volumes:
-      - ./tg:/data
+      - ./config:/data
     ports:
       - "2398:2398"
       - "443:443"
