@@ -4,9 +4,9 @@ The Telegram Messenger MTProto proxy is a zero-configuration container that auto
 
 ## Quick reference
 To start the proxy all you need to do is
-`docker run -d -p443:443 --name=mtproto-proxy --restart=always -v proxy-config:/data telegrammessenger/proxy:latest`
+`docker run -d -p443:443 --name=mtproxy --restart=always -v ./config:/data alexdoesh/mtproxy:latest`
 
-The container's log output (`docker logs mtproto-proxy`) will contain the links to paste into the Telegram app:
+The container's log output (`docker logs mtproxy`) will contain the links to paste into the Telegram app:
 
 ```
 [+] Using the explicitly passed secret: '00baadf00d15abad1deaa515baadcafe'.
@@ -24,23 +24,23 @@ The secret will persist across container upgrades in a volume. It is a mandatory
 Please note that the proxy gets the Telegram core IP addresses at the start of the container. We try to keep the changes to a minimum, but you should restart the container about once a day, just in case.
 
 ## Registering your proxy
-Once your MTProxy server is up and running go to @MTProxybot and register your proxy with Telegram to gain access to usage statistics and monetization.
+Once your MTProxy server is up and running go to [@MTProxybot](https://t.me/mtproxybot) and register your proxy with Telegram to gain access to usage statistics and monetization.
 
 ## Custom configuration
 If you need to specify a custom secret (say, if you are deploying multiple proxies with DNS load-balancing), you may pass the SECRET environment variable as 16 bytes in lower-case hexidecimals.:
-`docker run -d -p443:443 -v proxy-config:/data -e SECRET=00baadf00d15abad1deaa51sbaadcafe telegrammessenger/proxy:latest`
+`docker run -d -p443:443 -v ./tg:/data -e SECRET=00baadf00d15abad1deaa51sbaadcafe alexdoesh/mtproxy:latest`
 
 The proxy may be configured to accept up to 16 different secrets. You may specify them explicitly as comma-separated hex strings in the SECRET environment variable, or you may let the container generate the secrets automatically using the SECRET_COUNT variable to limit the number of generated secrets.
 
-`docker run -d -p443:443 -v proxy-config:/data -e SECRET=935ddceb2f6bbbb78363b224099f75c8,2084c7e58d8213296a3206da70356c81 telegrammessenger/proxy:latest`
-`docker run -d -p443:443 -v proxy-config:/data -e SECRET_COUNT=4 telegrammessenger/proxy:latest`
+`docker run -d -p443:443 -v ./tg:/data -e SECRET=935ddceb2f6bbbb78363b224099f75c8,2084c7e58d8213296a3206da70356c81 telegrammessenger/proxy:latest`
+`docker run -d -p443:443 -v ./tg:/data -e SECRET_COUNT=4 alexdoesh/mtproxy:latest`
 
 A custom advertisement tag may be provided using the TAG environment variable:
-docker run -d -p443:443 -v proxy-config:/data -e TAG=3f40462915a3e6026a4d790127b95ded telegrammessenger/proxy:latest.
+`docker run -d -p443:443 -v ./tg:/data -e TAG=3f40462915a3e6026a4d790127b95ded alexdoesh/mtproxy:latest`.
 Please note that the tag is not persistent: you'll have to provide it as an environment variable every time you run an MTProto proxy container.
 
 A single worker process is expected to handle tens of thousands of clients on a modern CPU. For best performance we artificially limit the proxy to 60000 connections per core and run two workers by default. If you have many clients, be sure to adjust the WORKERS variable:
-`docker run -d -p443:443 -v proxy-config:/data -e WORKERS=16 telegrammessenger/proxy:latest`
+`docker run -d -p443:443 -v ./tg:/data -e WORKERS=16 alexdoesh/mtproxy:latest`
 
 ## Monitoring
 The MTProto proxy server exports internal statistics as tab-separated values over the http://localhost:2398/stats endpoint. Please note that this endpoint is available only from localhost: depending on your configuration, you may need to collect the statistics with `docker exec mtproto-proxy curl http://localhost:2398/stats`.
