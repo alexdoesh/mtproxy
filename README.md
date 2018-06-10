@@ -36,7 +36,7 @@ The proxy may be configured to accept up to 16 different secrets. You may specif
 `docker run -d -p443:443 -v ./config:/data -e SECRET_COUNT=4 alexdoesh/mtproxy:latest`
 
 A custom advertisement tag may be provided using the TAG environment variable:
-`docker run -d -p443:443 -v ./configg:/data -e TAG=3f40462915a3e6026a4d790127b95ded alexdoesh/mtproxy:latest`.
+`docker run -d -p443:443 -v ./config:/data -e TAG=3f40462915a3e6026a4d790127b95ded alexdoesh/mtproxy:latest`.
 Please note that the tag is not persistent: you'll have to provide it as an environment variable every time you run an MTProto proxy container.
 
 A single worker process is expected to handle tens of thousands of clients on a modern CPU. For best performance we artificially limit the proxy to 60000 connections per core and run two workers by default. If you have many clients, be sure to adjust the WORKERS variable:
