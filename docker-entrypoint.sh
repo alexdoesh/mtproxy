@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 if [ ! -z "$DEBUG" ]; then set -x; fi
 mkdir /data 2>/dev/null >/dev/null
 RANDOM=$(printf "%d" "0x$(head -c4 /dev/urandom | od -t x1 -An | tr -d ' ')")
@@ -19,7 +19,7 @@ elif [ -f /data/secret ]; then
   echo "[+] Using the secret in /data/secret: '$SECRET'."
 else
   if [[ ! -z "$SECRET_COUNT" ]]; then
-    if [[ ! ( "$SECRET_COUNT" -ge 1 &&  "$SECRET_COUNT" -le 16 ) ]]; then
+    if [[ "$SECRET_COUNT" -le 1 || "$SECRET_COUNT" -ge 16 ]]; then
       echo "[F] Can generate between 1 and 16 secrets."
       exit 5
     fi
