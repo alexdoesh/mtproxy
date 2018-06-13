@@ -6,8 +6,10 @@ FROM alpine:3.6
 COPY ./patches /mtproxy/patches
 
 RUN apk add --no-cache --virtual .build-deps \
-      git make gcc musl-dev linux-headers openssl-dev \
-    && git clone --single-branch --depth 1 https://github.com/TelegramMessenger/MTProxy.git /mtproxy/sources \
+    curl make gcc musl-dev linux-headers openssl-dev \
+    && curl https://codeload.github.com/TelegramMessenger/MTProxy/tar.gz/master > master.tar.gz
+    && tar -zxf master.tar.gz -C /mtproxy \
+    && mv /mtproxy/MTProxy-master /mtproxy/sources \
     && cd /mtproxy/sources \
     && patch -p0 -i /mtproxy/patches/randr_compat.patch \
     && make -j$(getconf _NPROCESSORS_ONLN)
