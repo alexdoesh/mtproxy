@@ -1,0 +1,13 @@
+diff --git a/net/net-events.c b/net/net-events.c
+index 1a14377..3a051e2 100644
+--- a/net/net-events.c
++++ b/net/net-events.c
+@@ -411,7 +411,7 @@ int epoll_work (int timeout) {
+ 
+   double epoll_wait_start = get_utime_monotonic ();
+ 
+-  epoll_fetch_events (1);
++  epoll_fetch_events (100);
+ 
+   last_epoll_wait_at = get_utime_monotonic ();
+   double epoll_wait_time = last_epoll_wait_at - epoll_wait_start;

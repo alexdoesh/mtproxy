@@ -10,6 +10,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && git clone --single-branch --depth 1 https://github.com/TelegramMessenger/MTProxy.git /mtproxy/sources \
     && cd /mtproxy/sources \
     && patch -p0 -i /mtproxy/patches/randr_compat.patch \
+    && patch -p1 -i /mtproxy/patches/timeout.patch \
     && make -j$(getconf _NPROCESSORS_ONLN)
     # Let's skip all cleaning stuff for faster build
     # && cp /mtproxy/sources/objs/bin/mtproto-proxy /mtproxy/ \
